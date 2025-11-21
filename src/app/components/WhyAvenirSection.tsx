@@ -11,9 +11,10 @@ export default function WhyAvenirSection() {
         padding: '120px',
         opacity: 1,
         gridTemplateRows: 'auto auto 1fr',
-        transform: 'translateY(150px) translateX(-50px)',
+        transform: 'translateY(200px) translateX(-50px)',
         paddingLeft: '0px',
-        paddingRight: '0px'
+        paddingRight: '0px',
+        background: '#0F1219'
       }}
     >
       {/* Heading */}

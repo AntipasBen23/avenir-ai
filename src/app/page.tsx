@@ -4,6 +4,7 @@ import HeroSection from "./components/HeroSection";
 import InteractiveSection from "./components/InteractiveSection";
 import PartnersSection from "./components/PartnersSection";
 import WhyAvenirSection from "./components/WhyAvenirSection";
+import HowAvenirHelpsSection from "./components/HowAvenirHelpsSection";
 
 export default function Home() {
   return (
@@ -30,6 +31,7 @@ export default function Home() {
       <InteractiveSection />
       <PartnersSection />
       <WhyAvenirSection />
+      <HowAvenirHelpsSection />
     </div>
   );
 }
