@@ -97,7 +97,7 @@ export default function InteractiveSection() {
       </h2>
 
       {/* Two Boxes Container */}
-      <div className="flex gap-6">
+      <div className="flex gap-6 justify-center">
         {/* First Box - Economic Environment */}
         <div
           className="rounded-[24px] p-6"
