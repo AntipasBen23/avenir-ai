@@ -1,5 +1,6 @@
 // src/app/page.tsx
 import Navbar from "./components/Navbar";
+import HeroSection from "./components/HeroSection";
 
 export default function Home() {
   return (
@@ -16,13 +17,13 @@ export default function Home() {
           transformOrigin: 'top left',
           background: 'linear-gradient(180deg, #0140AE 50%, rgba(115, 160, 240, 0) 100%)',
           backdropFilter: 'blur(248.72720336914062px)',
-          opacity: 0.25,
+          opacity: 0.15,
           pointerEvents: 'none'
         }}
       />
       
       <Navbar />
-      {/* Rest of your content will go here */}
+      <HeroSection />
     </div>
   );
 }
