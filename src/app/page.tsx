@@ -1,10 +1,11 @@
 // src/app/page.tsx
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
+import InteractiveSection from "./components/InteractiveSection";
 
 export default function Home() {
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden pb-80">
       {/* First Diagonal Flash Effect */}
       <div
         className="absolute"
@@ -24,6 +25,7 @@ export default function Home() {
       
       <Navbar />
       <HeroSection />
+      <InteractiveSection />
     </div>
   );
 }
