@@ -1,3 +1,4 @@
+// src/app/components/HeroSection.tsx
 import Image from "next/image";
 
 export default function HeroSection() {
@@ -9,7 +10,8 @@ export default function HeroSection() {
         gap: '24px',
         opacity: 1,
         gridTemplateRows: 'auto auto auto auto 1fr',
-        paddingTop: '70px'
+        paddingTop: '70px',
+        background: '#04070F'
       }}
     >
       {/* AI-Powered Precision Button */}

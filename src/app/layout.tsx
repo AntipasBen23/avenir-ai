@@ -1,21 +1,23 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Lato, League_Spartan } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const lato = Lato({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  variable: '--font-lato',
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const leagueSpartan = League_Spartan({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-league-spartan',
 });
 
 export const metadata: Metadata = {
   title: "Avenir AI",
-  description: "Avenir AI Landing Page",
+  description: "Empower benefits professionals with data-driven insights",
 };
 
 export default function RootLayout({
@@ -25,9 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${lato.variable} ${leagueSpartan.variable} antialiased`}>
         {children}
       </body>
     </html>
