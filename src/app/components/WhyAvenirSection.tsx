@@ -6,11 +6,13 @@ export default function WhyAvenirSection() {
     <section 
       className="w-full grid"
       style={{
-        minHeight: '912px',
         gap: '40px',
-        padding: '120px',
+        paddingTop: '120px',
+        paddingBottom: '20px',
+        paddingLeft: '120px',
+        paddingRight: '120px',
         opacity: 1,
-        gridTemplateRows: 'auto auto 1fr',
+        gridTemplateRows: 'auto auto auto',
         transform: 'translateY(200px)',
         background: '#0F1219'
       }}
@@ -34,7 +36,6 @@ export default function WhyAvenirSection() {
         style={{
           maxWidth: '1199px',
           width: '100%',
-          minHeight: '592px',
           gap: '20px',
           opacity: 1
         }}
