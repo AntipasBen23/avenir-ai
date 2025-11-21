@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
 import InteractiveSection from "./components/InteractiveSection";
 import PartnersSection from "./components/PartnersSection";
+import WhyAvenirSection from "./components/WhyAvenirSection";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
       <HeroSection />
       <InteractiveSection />
       <PartnersSection />
+      <WhyAvenirSection />
     </div>
   );
 }
