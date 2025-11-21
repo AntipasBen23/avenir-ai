@@ -1,9 +1,37 @@
 // src/app/components/HowAvenirHelpsSection.tsx
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 export default function HowAvenirHelpsSection() {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
     <section 
+      ref={sectionRef}
       className="w-full mx-auto grid"
       style={{
         maxWidth: '1440px',
@@ -41,13 +69,22 @@ export default function HowAvenirHelpsSection() {
       >
         {/* Feature 1 - Real-Time Market Trend Analysis */}
         <div className="flex flex-col items-center" style={{ flex: 1 }}>
-          <Image 
-            src="/chart-icon.png" 
-            alt="Chart" 
-            width={60} 
-            height={60}
-            className="mb-6"
-          />
+          <div
+            style={{
+              transform: isVisible ? 'scale(1) rotate(0deg)' : 'scale(0) rotate(-180deg)',
+              opacity: isVisible ? 1 : 0,
+              transition: 'all 0.8s ease-out',
+              transitionDelay: '0s'
+            }}
+          >
+            <Image 
+              src="/chart-icon.png" 
+              alt="Chart" 
+              width={60} 
+              height={60}
+              className="mb-6"
+            />
+          </div>
           <h3
             className="text-[24px] leading-[100%] text-center mb-4"
             style={{
@@ -74,13 +111,22 @@ export default function HowAvenirHelpsSection() {
 
         {/* Feature 2 - AI-Generated Vendor & Compliance Reports */}
         <div className="flex flex-col items-center" style={{ flex: 1 }}>
-          <Image 
-            src="/document-icon.png" 
-            alt="Document" 
-            width={60} 
-            height={60}
-            className="mb-6"
-          />
+          <div
+            style={{
+              transform: isVisible ? 'scale(1) rotate(0deg)' : 'scale(0) rotate(-180deg)',
+              opacity: isVisible ? 1 : 0,
+              transition: 'all 0.8s ease-out',
+              transitionDelay: '0.2s'
+            }}
+          >
+            <Image 
+              src="/document-icon.png" 
+              alt="Document" 
+              width={60} 
+              height={60}
+              className="mb-6"
+            />
+          </div>
           <h3
             className="text-[24px] leading-[100%] text-center mb-4"
             style={{
@@ -107,13 +153,22 @@ export default function HowAvenirHelpsSection() {
 
         {/* Feature 3 - Cost Forecasting & Budget Optimization */}
         <div className="flex flex-col items-center" style={{ flex: 1 }}>
-          <Image 
-            src="/gear-icon.png" 
-            alt="Settings" 
-            width={60} 
-            height={60}
-            className="mb-6"
-          />
+          <div
+            style={{
+              transform: isVisible ? 'scale(1) rotate(0deg)' : 'scale(0) rotate(-180deg)',
+              opacity: isVisible ? 1 : 0,
+              transition: 'all 0.8s ease-out',
+              transitionDelay: '0.4s'
+            }}
+          >
+            <Image 
+              src="/gear-icon.png" 
+              alt="Settings" 
+              width={60} 
+              height={60}
+              className="mb-6"
+            />
+          </div>
           <h3
             className="text-[24px] leading-[100%] text-center mb-4"
             style={{
