@@ -4,16 +4,14 @@ import Image from "next/image";
 export default function WhyAvenirSection() {
   return (
     <section 
-      className="w-full max-w-[1439px] mx-auto grid"
+      className="w-full grid"
       style={{
-        height: '912px',
+        minHeight: '912px',
         gap: '40px',
         padding: '120px',
         opacity: 1,
         gridTemplateRows: 'auto auto 1fr',
-        transform: 'translateY(200px) translateX(-50px)',
-        paddingLeft: '0px',
-        paddingRight: '0px',
+        transform: 'translateY(200px)',
         background: '#0F1219'
       }}
     >
@@ -32,13 +30,13 @@ export default function WhyAvenirSection() {
 
       {/* Content Container */}
       <div 
-        className="flex items-start justify-center"
+        className="flex items-start justify-center mx-auto"
         style={{
-          width: '1199px',
-          height: '592px',
+          maxWidth: '1199px',
+          width: '100%',
+          minHeight: '592px',
           gap: '20px',
-          opacity: 1,
-          margin: '0 auto'
+          opacity: 1
         }}
       >
         {/* Left Side - Two Boxes */}
