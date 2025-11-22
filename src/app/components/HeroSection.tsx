@@ -1,4 +1,3 @@
-// src/app/components/HeroSection.tsx
 import Image from "next/image";
 
 export default function HeroSection() {
@@ -14,7 +13,6 @@ export default function HeroSection() {
         background: '#04070F'
       }}
     >
-      {/* AI-Powered Precision Button */}
       <button
         className="flex items-center justify-center rounded-full whitespace-nowrap justify-self-center"
         style={{
@@ -30,7 +28,6 @@ export default function HeroSection() {
           opacity: 1
         }}
       >
-        {/* Icon */}
         <Image 
           src="/ai-icon.png" 
           alt="AI Icon" 
@@ -38,7 +35,6 @@ export default function HeroSection() {
           height={24}
         />
         
-        {/* Text */}
         <span
           className="text-[16px] leading-[150%]"
           style={{
@@ -52,7 +48,6 @@ export default function HeroSection() {
         </span>
       </button>
 
-      {/* Main Heading */}
       <h1
         className="text-[60px] leading-[100%] text-center"
         style={{
@@ -62,10 +57,9 @@ export default function HeroSection() {
           color: '#E4E8F0'
         }}
       >
-        Optimize Employee Benefits with AI-Powered Precision
+        Optimize Employee Benefits with<br />AI-Powered Precision
       </h1>
 
-      {/* Subheading */}
       <p
         className="text-[18px] leading-[150%] text-center"
         style={{
@@ -75,12 +69,10 @@ export default function HeroSection() {
           color: '#A3ACBF'
         }}
       >
-        Interactive AI workers analyze claims, HRIS, and benchmarks to uncover cost drivers, forecast trends, and streamline decisions — in real time.
+        Interactive AI workers analyze claims, HRIS, and benchmarks to uncover cost drivers, forecast trends,<br />and streamline decisions — in real time.
       </p>
 
-      {/* CTA Buttons */}
       <div className="flex items-center justify-center gap-4">
-        {/* Book a demo button */}
         <button
           className="flex items-center justify-center rounded-full whitespace-nowrap"
           style={{
@@ -106,7 +98,6 @@ export default function HeroSection() {
           >
             Book a demo
           </span>
-          {/* Arrow icon */}
           <Image 
             src="/arrow-right.png" 
             alt="Arrow" 
@@ -115,7 +106,6 @@ export default function HeroSection() {
           />
         </button>
 
-        {/* See how it works button */}
         <button
           className="flex items-center justify-center rounded-full whitespace-nowrap"
           style={{
@@ -139,7 +129,7 @@ export default function HeroSection() {
               color: '#E6EAF2'
             }}
           >
-            See how it works
+            Contact us
           </span>
         </button>
       </div>
