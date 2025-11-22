@@ -6,12 +6,12 @@ import PartnersSection from "./components/PartnersSection";
 import WhyAvenirSection from "./components/WhyAvenirSection";
 import HowAvenirHelpsSection from "./components/HowAvenirHelpsSection";
 import WhoIsAvenirForSection from "./components/WhoIsAvenirForSection";
+import EmployAvenirSection from "./components/EmployAvenirSection";
 
 export default function Home() {
   return (
     <div className="min-h-screen relative overflow-hidden pb-80">
-      {/* First Diagonal Flash Effect */}
-      <div
+      {/* <div
         className="absolute"
         style={{
           width: '128.64px',
@@ -25,7 +25,7 @@ export default function Home() {
           opacity: 0.15,
           pointerEvents: 'none'
         }}
-      />
+      /> */}
       
       <Navbar />
       <HeroSection />
@@ -34,6 +34,7 @@ export default function Home() {
       <WhyAvenirSection />
       <HowAvenirHelpsSection />
       <WhoIsAvenirForSection />
+      <EmployAvenirSection />
     </div>
   );
 }
