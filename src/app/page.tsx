@@ -7,10 +7,11 @@ import WhyAvenirSection from "./components/WhyAvenirSection";
 import HowAvenirHelpsSection from "./components/HowAvenirHelpsSection";
 import WhoIsAvenirForSection from "./components/WhoIsAvenirForSection";
 import EmployAvenirSection from "./components/EmployAvenirSection";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen relative overflow-hidden pb-80">
+    <div className="min-h-screen relative overflow-hidden">
       {/* <div
         className="absolute"
         style={{
@@ -35,6 +36,7 @@ export default function Home() {
       <HowAvenirHelpsSection />
       <WhoIsAvenirForSection />
       <EmployAvenirSection />
+      <Footer />
     </div>
   );
 }
