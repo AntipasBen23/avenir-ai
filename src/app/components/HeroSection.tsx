@@ -3,16 +3,15 @@ import Image from "next/image";
 export default function HeroSection() {
   return (
     <section 
-      className="w-full max-w-[1440px] mx-auto px-[120px] grid"
+      className="w-full max-w-[1440px] mx-auto px-4 md:px-8 lg:px-[120px] grid pt-47 md:pt-48 lg:pt-[70px]"
       style={{
-        height: '310px',
         gap: '24px',
         opacity: 1,
         gridTemplateRows: 'auto auto auto auto 1fr',
-        paddingTop: '70px',
         background: '#04070F'
       }}
     >
+      {/* AI-Powered Precision Badge */}
       <button
         className="flex items-center justify-center rounded-full whitespace-nowrap justify-self-center"
         style={{
@@ -48,8 +47,9 @@ export default function HeroSection() {
         </span>
       </button>
 
+      {/* Main Heading */}
       <h1
-        className="text-[60px] leading-[100%] text-center"
+        className="text-[40px] md:text-[50px] lg:text-[60px] leading-[100%] text-center"
         style={{
           fontFamily: 'League Spartan, sans-serif',
           fontWeight: 600,
@@ -57,11 +57,22 @@ export default function HeroSection() {
           color: '#E4E8F0'
         }}
       >
-        Optimize Employee Benefits with<br />AI-Powered Precision
+        {/* Mobile: Line breaks after Employee, with, Precision */}
+        <span className="md:hidden">
+          Optimize Employee<br />
+          Benefits with<br />
+          AI-Powered Precision
+        </span>
+        
+        {/* Tablet & Desktop: Original layout */}
+        <span className="hidden md:inline">
+          Optimize Employee Benefits with<br />AI-Powered Precision
+        </span>
       </h1>
 
+      {/* Description */}
       <p
-        className="text-[18px] leading-[150%] text-center"
+        className="text-[18px] leading-[150%] text-center px-0 md:px-4 lg:px-0"
         style={{
           fontFamily: 'Lato, sans-serif',
           fontWeight: 400,
@@ -69,10 +80,22 @@ export default function HeroSection() {
           color: '#A3ACBF'
         }}
       >
-        Interactive AI workers analyze claims, HRIS, and benchmarks to uncover cost drivers, forecast trends,<br />and streamline decisions — in real time.
+        {/* Mobile: Exact line breaks matching screenshot - ending at HRIS, drivers, decisions */}
+        <span className="md:hidden">
+          Interactive AI workers analyze claims, HRIS,<br />
+          and benchmarks to uncover cost drivers,<br />
+          forecast trends, and streamline decisions —<br />
+          in real time.
+        </span>
+        
+        {/* Tablet & Desktop: Original layout */}
+        <span className="hidden md:inline">
+          Interactive AI workers analyze claims, HRIS, and benchmarks to uncover cost drivers, forecast trends,<br />and streamline decisions — in real time.
+        </span>
       </p>
 
-      <div className="flex items-center justify-center gap-4">
+      {/* CTA Buttons - Side by Side on All Devices */}
+      <div className="flex flex-row items-center justify-center gap-3 md:gap-4 pb-8 md:pb-0">
         <button
           className="flex items-center justify-center rounded-full whitespace-nowrap"
           style={{
@@ -109,7 +132,7 @@ export default function HeroSection() {
         <button
           className="flex items-center justify-center rounded-full whitespace-nowrap"
           style={{
-            width: '176px',
+            width: '129px',
             height: '48px',
             gap: '10px',
             paddingTop: '16px',
