@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function WhoIsAvenirForSection() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -35,7 +36,7 @@ export default function WhoIsAvenirForSection() {
       style={{
         maxWidth: '1440px',
         height: '642px',
-        paddingTop: '80px',
+        paddingTop: '120px',
         paddingRight: '120px',
         paddingBottom: '80px',
         paddingLeft: '120px',
@@ -53,27 +54,34 @@ export default function WhoIsAvenirForSection() {
           letterSpacing: '-3%',
           textAlign: 'center',
           color: '#E4E8F0',
-          marginBottom: '64px'
+          marginBottom: '8px'
         }}
       >
         Who is Avenir AI for?
       </h2>
 
       {/* Content Container */}
-      <div className="flex items-start" style={{ gap: '80px' }}>
+      <div 
+        style={{ 
+          display: 'grid',
+          gridTemplateColumns: '1.8fr 0.5fr',
+          gridTemplateRows: '10px auto 1fr',
+          gap: '60px'
+        }}
+      >
         {/* Left Side - Headers with individual bars and Content */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '48px', maxWidth: '500px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', width: '383px', height: '220px', gridRowStart: 3, gridColumnStart: 1, justifySelf: 'start', opacity: 1 }}>
           {sections.map((section, index) => (
-            <div key={index} className="flex" style={{ gap: '24px' }}>
+            <div key={index} className="flex" style={{ gap: '24px', alignItems: 'stretch' }}>
               {/* Individual Bar for each heading */}
               <div 
                 style={{
                   width: '4px',
-                  height: activeIndex === index ? '100px' : '32px',
+                  alignSelf: 'stretch',
                   backgroundColor: 'rgba(228, 232, 240, 0.1)',
                   borderRadius: '2px',
                   position: 'relative',
-                  transition: 'height 0.5s ease-in-out'
+                  minHeight: '32px'
                 }}
               >
                 {/* Indicator - only shows on active */}
@@ -87,7 +95,9 @@ export default function WhoIsAvenirForSection() {
                       borderTopRightRadius: '99px',
                       opacity: 1,
                       position: 'absolute',
-                      top: 0
+                      top: index === 0 ? '0' : index === 1 ? '50%' : 'auto',
+                      bottom: index === 2 ? '0' : 'auto',
+                      transform: index === 1 ? 'translateY(-50%)' : 'none'
                     }}
                   />
                 )}
@@ -128,6 +138,41 @@ export default function WhoIsAvenirForSection() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Right Side - Image */}
+        <div 
+          style={{ 
+            gridRowStart: 2, 
+            gridColumnStart: 2,
+            gridRowEnd: 4,
+            position: 'relative',
+            width: '777px',
+            height: '410px',
+            opacity: 1,
+            top: '-40px'
+          }}
+        >
+          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+            <Image 
+              src="/avenir-people.png" 
+              alt="Avenir AI professionals" 
+              fill
+              style={{ objectFit: 'contain', objectPosition: 'bottom' }}
+            />
+            {/* Gradient overlay to blend bottom with background */}
+            <div 
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '200px',
+                background: 'linear-gradient(180deg, rgba(10, 14, 26, 0) 0%, #0A0E1A 100%)',
+                pointerEvents: 'none'
+              }}
+            />
+          </div>
         </div>
       </div>
     </section>
