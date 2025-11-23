@@ -32,69 +32,122 @@ export default function WhoIsAvenirForSection() {
 
   return (
     <section 
-      className="w-full mx-auto"
-      style={{
-        maxWidth: '1440px',
-        height: '642px',
-        paddingTop: '120px',
-        paddingRight: '120px',
-        paddingBottom: '80px',
-        paddingLeft: '120px',
-        gap: '32px',
-        opacity: 1
-      }}
+      className="w-full max-w-[375px] md:max-w-[900px] lg:max-w-[1440px] mx-auto pt-20 md:pt-[120px] pb-20 md:pb-20 px-4 md:px-12 lg:px-[120px] opacity-100"
     >
       {/* Heading */}
       <h2
+        className="text-[28px] md:text-[36px] lg:text-[40px] leading-[100%] text-center mb-12 md:mb-16 lg:mb-8 font-semibold text-[#E4E8F0]"
         style={{
           fontFamily: 'League Spartan, sans-serif',
-          fontWeight: 600,
-          fontSize: '40px',
-          lineHeight: '100%',
-          letterSpacing: '-3%',
-          textAlign: 'center',
-          color: '#E4E8F0',
-          marginBottom: '8px'
+          letterSpacing: '-3%'
         }}
       >
         Who is Avenir AI for?
       </h2>
 
-      {/* Content Container */}
-      <div 
-        style={{ 
-          display: 'grid',
-          gridTemplateColumns: '1.8fr 0.5fr',
-          gridTemplateRows: '10px auto 1fr',
-          gap: '60px'
-        }}
-      >
-        {/* Left Side - Headers with individual bars and Content */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', width: '383px', height: '220px', gridRowStart: 3, gridColumnStart: 1, justifySelf: 'start', opacity: 1 }}>
+      {/* Mobile & Tablet Layout: Content then Image */}
+      <div className="lg:hidden flex flex-col gap-8 items-start md:items-center">
+        {/* Content - All three sections stacked */}
+        <div className="flex flex-col gap-8 w-full max-w-[500px] md:ml-20">
           {sections.map((section, index) => (
-            <div key={index} className="flex" style={{ gap: '24px', alignItems: 'stretch' }}>
-              {/* Individual Bar for each heading */}
+            <div key={index} className="flex gap-6 items-start">
+              {/* Individual Bar */}
               <div 
-                style={{
-                  width: '4px',
-                  alignSelf: 'stretch',
-                  backgroundColor: 'rgba(228, 232, 240, 0.1)',
-                  borderRadius: '2px',
-                  position: 'relative',
-                  minHeight: '32px'
-                }}
+                className="w-1 self-stretch bg-[rgba(228,232,240,0.1)] rounded-sm relative min-h-8"
               >
                 {/* Indicator - only shows on active */}
                 {activeIndex === index && (
                   <div
+                    className="w-1 h-[13px] bg-[#0140AE] absolute transition-all duration-500"
                     style={{
-                      width: '4px',
-                      height: '13px',
-                      backgroundColor: '#0140AE',
                       borderTopLeftRadius: '99px',
                       borderTopRightRadius: '99px',
-                      opacity: 1,
-                      position: 'absolute',
+                      top: index === 0 ? '0' : index === 1 ? '50%' : 'auto',
+                      bottom: index === 2 ? '0' : 'auto',
+                      transform: index === 1 ? 'translateY(-50%)' : 'none'
+                    }}
+                  />
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="flex-1">
+                <h3
+                  className="text-xl md:text-2xl leading-[100%] mb-3 font-semibold text-[#E4E8F0] transition-opacity duration-500"
+                  style={{
+                    fontFamily: 'League Spartan, sans-serif',
+                    letterSpacing: '-3%',
+                    opacity: activeIndex === index ? 1 : 0.4
+                  }}
+                >
+                  {section.title}
+                </h3>
+                {activeIndex === index && (
+                  <p
+                    className="text-sm md:text-base leading-[150%] font-normal text-[#A3ACBF] whitespace-pre-line"
+                    style={{
+                      fontFamily: 'Lato, sans-serif',
+                      letterSpacing: '0%'
+                    }}
+                  >
+                    {section.content}
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Image - Below content on mobile & tablet, centered */}
+        <div className="relative w-full max-w-[500px] h-[206px] md:h-[300px] opacity-100 mx-auto">
+          <Image 
+            src="/avenir-people.png" 
+            alt="Avenir AI professionals" 
+            fill
+            className="object-contain object-bottom"
+          />
+          {/* Gradient overlay */}
+          <div 
+            className="absolute bottom-0 left-0 right-0 h-[100px] md:h-[150px] pointer-events-none"
+            style={{
+              background: 'linear-gradient(180deg, rgba(10, 14, 26, 0) 0%, #0A0E1A 100%)'
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Desktop Layout: Original Grid */}
+      <div 
+        className="hidden lg:grid gap-[60px]"
+        style={{ 
+          gridTemplateColumns: '1.8fr 0.5fr',
+          gridTemplateRows: '10px auto 1fr'
+        }}
+      >
+        {/* Left Side - Headers with individual bars and Content */}
+        <div 
+          className="flex flex-col gap-8 opacity-100"
+          style={{ 
+            width: '383px', 
+            height: '220px', 
+            gridRowStart: 3, 
+            gridColumnStart: 1, 
+            justifySelf: 'start'
+          }}
+        >
+          {sections.map((section, index) => (
+            <div key={index} className="flex gap-6 items-stretch">
+              {/* Individual Bar for each heading */}
+              <div 
+                className="w-1 self-stretch bg-[rgba(228,232,240,0.1)] rounded-sm relative min-h-8"
+              >
+                {/* Indicator - only shows on active */}
+                {activeIndex === index && (
+                  <div
+                    className="w-1 h-[13px] bg-[#0140AE] absolute"
+                    style={{
+                      borderTopLeftRadius: '99px',
+                      borderTopRightRadius: '99px',
                       top: index === 0 ? '0' : index === 1 ? '50%' : 'auto',
                       bottom: index === 2 ? '0' : 'auto',
                       transform: index === 1 ? 'translateY(-50%)' : 'none'
@@ -106,30 +159,21 @@ export default function WhoIsAvenirForSection() {
               {/* Content */}
               <div>
                 <h3
+                  className="text-2xl leading-[100%] mb-3 font-semibold text-[#E4E8F0] transition-opacity duration-500"
                   style={{
                     fontFamily: 'League Spartan, sans-serif',
-                    fontWeight: 600,
-                    fontSize: '24px',
-                    lineHeight: '100%',
                     letterSpacing: '-3%',
-                    color: '#E4E8F0',
-                    marginBottom: '12px',
-                    opacity: activeIndex === index ? 1 : 0.4,
-                    transition: 'opacity 0.5s ease-in-out'
+                    opacity: activeIndex === index ? 1 : 0.4
                   }}
                 >
                   {section.title}
                 </h3>
                 {activeIndex === index && (
                   <p
+                    className="text-base leading-[150%] font-normal text-[#A3ACBF] whitespace-pre-line"
                     style={{
                       fontFamily: 'Lato, sans-serif',
-                      fontWeight: 400,
-                      fontSize: '16px',
-                      lineHeight: '150%',
-                      letterSpacing: '0%',
-                      color: '#A3ACBF',
-                      whiteSpace: 'pre-line'
+                      letterSpacing: '0%'
                     }}
                   >
                     {section.content}
@@ -142,34 +186,26 @@ export default function WhoIsAvenirForSection() {
 
         {/* Right Side - Image */}
         <div 
+          className="relative w-[777px] h-[410px] opacity-100"
           style={{ 
             gridRowStart: 2, 
             gridColumnStart: 2,
             gridRowEnd: 4,
-            position: 'relative',
-            width: '777px',
-            height: '410px',
-            opacity: 1,
             top: '-40px'
           }}
         >
-          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+          <div className="relative w-full h-full">
             <Image 
               src="/avenir-people.png" 
               alt="Avenir AI professionals" 
               fill
-              style={{ objectFit: 'contain', objectPosition: 'bottom' }}
+              className="object-contain object-bottom"
             />
             {/* Gradient overlay to blend bottom with background */}
             <div 
+              className="absolute bottom-0 left-0 right-0 h-[200px] pointer-events-none"
               style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: '200px',
-                background: 'linear-gradient(180deg, rgba(10, 14, 26, 0) 0%, #0A0E1A 100%)',
-                pointerEvents: 'none'
+                background: 'linear-gradient(180deg, rgba(10, 14, 26, 0) 0%, #0A0E1A 100%)'
               }}
             />
           </div>
