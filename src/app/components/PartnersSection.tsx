@@ -98,15 +98,7 @@ export default function PartnersSection() {
             className="md:w-[140px] lg:w-[160px] h-auto"
           />
         </div>
-        <div className="grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer opacity-60 hover:opacity-100">
-          <Image 
-            src="/mit-sandbox.png" 
-            alt="MIT Sandbox" 
-            width={120} 
-            height={45}
-            className="md:w-[140px] lg:w-[160px] h-auto"
-          />
-        </div>
+        
       </div>
     </section>
   );
