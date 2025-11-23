@@ -32,44 +32,41 @@ export default function HowAvenirHelpsSection() {
   return (
     <section 
       ref={sectionRef}
-      className="w-full mx-auto grid"
+      className="w-full max-w-[375px] md:max-w-[900px] lg:max-w-[1440px] mx-auto grid gap-12 md:gap-16 lg:gap-20 pt-[120px] pb-[120px] px-4 md:px-12 lg:px-[120px] opacity-100 translate-y-[150px]"
       style={{
-        maxWidth: '1440px',
-        height: '584px',
-        gap: '80px',
-        padding: '120px',
-        opacity: 1,
-        gridTemplateRows: 'auto auto 1fr',
-        transform: 'translateY(150px)'
+        gridTemplateRows: 'auto auto 1fr'
       }}
     >
       {/* Heading */}
       <h2
-        className="text-[40px] leading-[100%] text-center"
+        className="text-[28px] md:text-[36px] lg:text-[40px] leading-[100%] text-center font-semibold text-[#E4E8F0]"
         style={{
           fontFamily: 'League Spartan, sans-serif',
-          fontWeight: 600,
-          letterSpacing: '-0.03em',
-          color: '#E4E8F0'
+          letterSpacing: '-0.03em'
         }}
       >
-        How Avenir helps you
+        {/* Mobile: Line break after helps */}
+        <span className="md:hidden">
+          How Avenir helps<br />you
+        </span>
+        
+        {/* Tablet & Desktop: No line break */}
+        <span className="hidden md:inline">
+          How Avenir helps you
+        </span>
       </h2>
 
-      {/* Three Features Container */}
+      {/* Three Features Container - Stack on Mobile, Row on Desktop */}
       <div 
-        className="flex justify-center items-start mx-auto"
+        className="flex flex-col md:flex-row justify-center items-start mx-auto w-full gap-12 md:gap-16 lg:gap-20"
         style={{
-          maxWidth: '1200px',
-          width: '100%',
-          height: '224px',
-          gap: '80px',
-          opacity: 1
+          maxWidth: '1200px'
         }}
       >
         {/* Feature 1 - Real-Time Market Trend Analysis */}
-        <div className="flex flex-col items-center" style={{ flex: 1 }}>
+        <div className="flex flex-col items-center flex-1">
           <div
+            className="mb-6"
             style={{
               transform: isVisible ? 'scale(1) rotate(0deg)' : 'scale(0) rotate(-180deg)',
               opacity: isVisible ? 1 : 0,
@@ -82,27 +79,30 @@ export default function HowAvenirHelpsSection() {
               alt="Chart" 
               width={60} 
               height={60}
-              className="mb-6"
             />
           </div>
           <h3
-            className="text-[24px] leading-[100%] text-center mb-4"
+            className="text-lg md:text-xl lg:text-2xl leading-[100%] text-center mb-4 font-semibold text-[#E4E8F0]"
             style={{
               fontFamily: 'League Spartan, sans-serif',
-              fontWeight: 600,
-              letterSpacing: '-0.03em',
-              color: '#E4E8F0'
+              letterSpacing: '-0.03em'
             }}
           >
-            Real-Time Market Trend Analysis
+            {/* Mobile: Line break after Trend */}
+            <span className="md:hidden">
+              Real-Time Market Trend<br />Analysis
+            </span>
+            
+            {/* Tablet & Desktop: No line break */}
+            <span className="hidden md:inline">
+              Real-Time Market Trend Analysis
+            </span>
           </h3>
           <p
-            className="text-[16px] leading-[150%] text-center"
+            className="text-sm md:text-base leading-[150%] text-center font-normal text-[#A3ACBF]"
             style={{
               fontFamily: 'Lato, sans-serif',
-              fontWeight: 400,
-              letterSpacing: '0%',
-              color: '#A3ACBF'
+              letterSpacing: '0%'
             }}
           >
             Continuously monitor claims, HRIS, and benchmarks to identify savings opportunities and emerging risks before anyone else.
@@ -110,8 +110,9 @@ export default function HowAvenirHelpsSection() {
         </div>
 
         {/* Feature 2 - AI-Generated Vendor & Compliance Reports */}
-        <div className="flex flex-col items-center" style={{ flex: 1 }}>
+        <div className="flex flex-col items-center flex-1">
           <div
+            className="mb-6"
             style={{
               transform: isVisible ? 'scale(1) rotate(0deg)' : 'scale(0) rotate(-180deg)',
               opacity: isVisible ? 1 : 0,
@@ -124,27 +125,30 @@ export default function HowAvenirHelpsSection() {
               alt="Document" 
               width={60} 
               height={60}
-              className="mb-6"
             />
           </div>
           <h3
-            className="text-[24px] leading-[100%] text-center mb-4"
+            className="text-lg md:text-xl lg:text-2xl leading-[100%] text-center mb-4 font-semibold text-[#E4E8F0]"
             style={{
               fontFamily: 'League Spartan, sans-serif',
-              fontWeight: 600,
-              letterSpacing: '-0.03em',
-              color: '#E4E8F0'
+              letterSpacing: '-0.03em'
             }}
           >
-            AI-Generated Vendor & Compliance Reports
+            {/* Mobile: Line break after & */}
+            <span className="md:hidden">
+              AI-Generated Vendor &<br />Compliance Reports
+            </span>
+            
+            {/* Tablet & Desktop: No line break */}
+            <span className="hidden md:inline">
+              AI-Generated Vendor & Compliance Reports
+            </span>
           </h3>
           <p
-            className="text-[16px] leading-[150%] text-center"
+            className="text-sm md:text-base leading-[150%] text-center font-normal text-[#A3ACBF]"
             style={{
               fontFamily: 'Lato, sans-serif',
-              fontWeight: 400,
-              letterSpacing: '0%',
-              color: '#A3ACBF'
+              letterSpacing: '0%'
             }}
           >
             Generate comparisons, compliance docs, and benchmark reports with a conversational assistant that works 24/7.
@@ -152,8 +156,9 @@ export default function HowAvenirHelpsSection() {
         </div>
 
         {/* Feature 3 - Cost Forecasting & Budget Optimization */}
-        <div className="flex flex-col items-center" style={{ flex: 1 }}>
+        <div className="flex flex-col items-center flex-1">
           <div
+            className="mb-6"
             style={{
               transform: isVisible ? 'scale(1) rotate(0deg)' : 'scale(0) rotate(-180deg)',
               opacity: isVisible ? 1 : 0,
@@ -166,27 +171,30 @@ export default function HowAvenirHelpsSection() {
               alt="Settings" 
               width={60} 
               height={60}
-              className="mb-6"
             />
           </div>
           <h3
-            className="text-[24px] leading-[100%] text-center mb-4"
+            className="text-lg md:text-xl lg:text-2xl leading-[100%] text-center mb-4 font-semibold text-[#E4E8F0]"
             style={{
               fontFamily: 'League Spartan, sans-serif',
-              fontWeight: 600,
-              letterSpacing: '-0.03em',
-              color: '#E4E8F0'
+              letterSpacing: '-0.03em'
             }}
           >
-            Cost Forecasting & Budget Optimization
+            {/* Mobile: Line break after Budget */}
+            <span className="md:hidden">
+              Cost Forecasting & Budget<br />Optimization
+            </span>
+            
+            {/* Tablet & Desktop: No line break */}
+            <span className="hidden md:inline">
+              Cost Forecasting & Budget Optimization
+            </span>
           </h3>
           <p
-            className="text-[16px] leading-[150%] text-center"
+            className="text-sm md:text-base leading-[150%] text-center font-normal text-[#A3ACBF]"
             style={{
               fontFamily: 'Lato, sans-serif',
-              fontWeight: 400,
-              letterSpacing: '0%',
-              color: '#A3ACBF'
+              letterSpacing: '0%'
             }}
           >
             Move from guessing to planning. Interactive tools deliver accurate cost predictions so your benefits stay competitive and cost-effective.
