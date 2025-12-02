@@ -2,15 +2,15 @@
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
-import { Suspense, useRef, useEffect } from "react";
-import * as THREE from "three";
+import { Suspense } from "react";
 import Section1Scene from "./Section1Scene";
 import Section2Scene from "./Section2Scene";
 import Section3Scene from "./Section3scene";
+import Section4Scene from "./Section4scene";
 
 interface ThreeSceneProps {
   scrollProgress: number; // 0 to 1
-  currentSection: number; // 0 to 2 (3 sections now)
+  currentSection: number; // 0 to 3 (4 sections now)
   binocularsVisible: boolean; // Controls slide-in animation
 }
 
@@ -48,12 +48,11 @@ function CameraController({ scrollProgress }: { scrollProgress: number }) {
         camera.position.z = 5;
       }
     }
-    // Section 3: Conference room (67-100% of total scroll)
+    // Section 3 & 4: Conference room and Executive office (67-100% of total scroll)
+    // Camera control is handled within Section3Scene directly
     else {
-      // Camera positioned for conference room view
-      camera.position.x = 0;
-      camera.position.y = 0;
-      camera.position.z = 5;
+      // Let Section3Scene control the camera during its phases
+      // Camera will be at audience view, then sweep to podium
     }
   });
   
@@ -94,9 +93,14 @@ export default function ThreeScene({ scrollProgress, currentSection, binocularsV
           <Section2Scene scrollProgress={scrollProgress} />
         )}
 
-        {/* Section 3: Conference Room (65%+ of total scroll) */}
+        {/* Section 3: Conference Room (65-100% of total scroll) */}
         {scrollProgress >= 0.65 && (
           <Section3Scene scrollProgress={scrollProgress} />
+        )}
+
+        {/* Section 4: Executive Office (85%+ of total scroll - overlaps with Section 3 fadeout) */}
+        {scrollProgress >= 0.85 && (
+          <Section4Scene scrollProgress={scrollProgress} />
         )}
       </Suspense>
     </Canvas>

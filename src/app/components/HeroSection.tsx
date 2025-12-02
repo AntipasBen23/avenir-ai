@@ -23,6 +23,7 @@ export default function HeroSection() {
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
   const progressLine1Ref = useRef<HTMLDivElement>(null); // Line between 01-02
   const progressLine2Ref = useRef<HTMLDivElement>(null); // Line between 02-03
+  const progressLine3Ref = useRef<HTMLDivElement>(null); // Line between 03-04
   const [currentSection, setCurrentSection] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -80,9 +81,9 @@ export default function HeroSection() {
       const progress = parseFloat(savedScrollProgress);
       setScrollProgress(progress);
       
-      // Update current section based on saved progress
-      const section = Math.floor(progress * 2);
-      setCurrentSection(Math.min(section, 1));
+      // Update current section based on saved progress (4 sections now)
+      const section = Math.floor(progress * 4);
+      setCurrentSection(Math.min(section, 3));
       
       // Trigger ScrollTrigger to scroll to the saved position
       setTimeout(() => {
@@ -149,100 +150,131 @@ export default function HeroSection() {
           id: 'heroScrollTrigger',
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=200%",
+          end: "+=300%", // Extended for 4 sections
           scrub: 1,
           pin: true,
           anticipatePin: 1,
           onUpdate: (self) => {
             const progress = self.progress;
             
-            // Update scroll progress and current section
+            // Update scroll progress and current section (4 sections now)
             setScrollProgress(progress);
-            const section = Math.floor(progress * 3);
-            setCurrentSection(Math.min(section, 2));
+            const section = Math.floor(progress * 4);
+            setCurrentSection(Math.min(section, 3));
             
-            // Update progress lines
+            // Update progress line 1 (01 to 02) - fills during 0-25%
             if (progressLine1Ref.current) {
-              if (progress <= 0.33) {
-                progressLine1Ref.current.style.height = `${(progress / 0.33) * 100}%`;
+              if (progress <= 0.25) {
+                progressLine1Ref.current.style.height = `${(progress / 0.25) * 100}%`;
               } else {
                 progressLine1Ref.current.style.height = '100%';
               }
             }
             
+            // Update progress line 2 (02 to 03) - fills during 25-50%
             if (progressLine2Ref.current) {
-              if (progress <= 0.33) {
+              if (progress <= 0.25) {
                 progressLine2Ref.current.style.height = '0%';
-              } else if (progress <= 0.67) {
-                progressLine2Ref.current.style.height = `${((progress - 0.33) / 0.34) * 100}%`;
+              } else if (progress <= 0.5) {
+                progressLine2Ref.current.style.height = `${((progress - 0.25) / 0.25) * 100}%`;
               } else {
                 progressLine2Ref.current.style.height = '100%';
               }
             }
 
-            // Control content visibility based on scroll position
+            // Update progress line 3 (03 to 04) - fills during 50-75%
+            if (progressLine3Ref.current) {
+              if (progress <= 0.5) {
+                progressLine3Ref.current.style.height = '0%';
+              } else if (progress <= 0.75) {
+                progressLine3Ref.current.style.height = `${((progress - 0.5) / 0.25) * 100}%`;
+              } else {
+                progressLine3Ref.current.style.height = '100%';
+              }
+            }
+
+            // Control content visibility based on scroll position (4 sections)
             contentRefs.current.forEach((content, index) => {
               if (!content) return;
               
               if (index === 0) {
-                content.style.display = progress < 0.33 ? 'block' : 'none';
+                content.style.display = progress < 0.25 ? 'block' : 'none';
               } else if (index === 1) {
-                content.style.display = (progress >= 0.32 && progress < 0.67) ? 'block' : 'none';
+                content.style.display = (progress >= 0.24 && progress < 0.5) ? 'block' : 'none';
               } else if (index === 2) {
-                content.style.display = progress >= 0.66 ? 'block' : 'none';
+                // Section 3 content stays visible until Section 4 actually starts (85% / 0.85)
+                content.style.display = (progress >= 0.49 && progress < 0.85) ? 'block' : 'none';
+              } else if (index === 3) {
+                // Section 4 content appears when Section 4 starts
+                content.style.display = progress >= 0.85 ? 'block' : 'none';
               }
             });
           },
         },
       });
 
-      // Animate content sections
+      // Animate content sections (4 sections now)
       contentRefs.current.forEach((content, index) => {
-        if (!content || index > 2) return;
+        if (!content || index > 3) return;
 
         if (index === 0) {
           gsap.set(content, { opacity: 1, y: 0 });
-          tl.to(content, { opacity: 0, y: -30, duration: 0.2, ease: "power2.in" }, 0.31);
+          tl.to(content, { opacity: 0, y: -30, duration: 0.2, ease: "power2.in" }, 0.23);
         }
 
         if (index === 1) {
           gsap.set(content, { opacity: 0, y: 30 });
-          tl.to(content, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 0.33);
-          tl.to(content, { opacity: 0, y: -30, duration: 0.2, ease: "power2.in" }, 0.65);
+          tl.to(content, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 0.25);
+          tl.to(content, { opacity: 0, y: -30, duration: 0.2, ease: "power2.in" }, 0.48);
         }
 
         if (index === 2) {
           gsap.set(content, { opacity: 0, y: 30 });
-          tl.to(content, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 0.67);
+          tl.to(content, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 0.5);
+          tl.to(content, { opacity: 0, y: -30, duration: 0.2, ease: "power2.in" }, 0.83);
+        }
+
+        if (index === 3) {
+          gsap.set(content, { opacity: 0, y: 30 });
+          tl.to(content, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 0.85);
         }
       });
 
-      // Animate progress lines filling - need to handle 2 separate lines
-      // Line 1: Between dots 01-02 (fills from 0-33% scroll)
-      // Line 2: Between dots 02-03 (fills from 33-67% scroll)
-      
+      // Animate progress lines filling - 3 separate lines now
       tl.call(() => {
         const progress = ScrollTrigger.getById('heroScrollTrigger')?.progress || 0;
         
-        // First line (01 to 02) - fills during 0-33%
+        // First line (01 to 02) - fills during 0-25%
         if (progressLine1Ref.current) {
-          if (progress <= 0.33) {
-            const line1Progress = progress / 0.33; // 0 to 1
+          if (progress <= 0.25) {
+            const line1Progress = progress / 0.25;
             progressLine1Ref.current.style.height = `${line1Progress * 100}%`;
           } else {
             progressLine1Ref.current.style.height = '100%';
           }
         }
         
-        // Second line (02 to 03) - fills during 33-67%
+        // Second line (02 to 03) - fills during 25-50%
         if (progressLine2Ref.current) {
-          if (progress <= 0.33) {
+          if (progress <= 0.25) {
             progressLine2Ref.current.style.height = '0%';
-          } else if (progress <= 0.67) {
-            const line2Progress = (progress - 0.33) / 0.34; // 0 to 1
+          } else if (progress <= 0.5) {
+            const line2Progress = (progress - 0.25) / 0.25;
             progressLine2Ref.current.style.height = `${line2Progress * 100}%`;
           } else {
             progressLine2Ref.current.style.height = '100%';
+          }
+        }
+
+        // Third line (03 to 04) - fills during 50-75%
+        if (progressLine3Ref.current) {
+          if (progress <= 0.5) {
+            progressLine3Ref.current.style.height = '0%';
+          } else if (progress <= 0.75) {
+            const line3Progress = (progress - 0.5) / 0.25;
+            progressLine3Ref.current.style.height = `${line3Progress * 100}%`;
+          } else {
+            progressLine3Ref.current.style.height = '100%';
           }
         }
       }, [], "+=0"); // Run continuously
@@ -445,6 +477,7 @@ export default function HeroSection() {
           <ContentSection section={0} setRef={(el) => { contentRefs.current[0] = el; }} />
           <ContentSection section={1} setRef={(el) => { contentRefs.current[1] = el; }} />
           <ContentSection section={2} setRef={(el) => { contentRefs.current[2] = el; }} />
+          <ContentSection section={3} setRef={(el) => { contentRefs.current[3] = el; }} />
         </div>
       </div>
 
@@ -453,6 +486,7 @@ export default function HeroSection() {
         currentSection={currentSection}
         progressLine1Ref={progressLine1Ref}
         progressLine2Ref={progressLine2Ref}
+        progressLine3Ref={progressLine3Ref}
       />
 
       {/* Scroll Indicator - Bottom Center (only show on first section) */}
