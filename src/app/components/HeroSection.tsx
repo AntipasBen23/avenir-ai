@@ -31,30 +31,78 @@ export default function HeroSection() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSolutionsOpen, setIsSolutionsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [binocularsVisible, setBinocularsVisible] = useState(false);
-
-  // Check if loading screen has been shown this session
-  useEffect(() => {
-    const hasLoadedBefore = sessionStorage.getItem('hasLoadedHero');
-    
-    if (hasLoadedBefore) {
-      // Skip loading screen, show content immediately
-      setIsLoading(false);
-      setBinocularsVisible(true);
+  
+  // Initialize loading state - only show if we're at the top of the page
+  const [isLoading, setIsLoading] = useState(() => {
+    if (typeof window !== 'undefined') {
+      // Check if user has scrolled down
+      const savedScrollProgress = sessionStorage.getItem('heroScrollProgress');
+      // Only show loading screen if at the very beginning (no saved scroll)
+      return !savedScrollProgress || parseFloat(savedScrollProgress) === 0;
     }
-  }, []);
+    return true;
+  });
+  
+  const [binocularsVisible, setBinocularsVisible] = useState(() => {
+    if (typeof window !== 'undefined') {
+      // If there's saved scroll progress, binoculars should be visible immediately
+      const savedScrollProgress = sessionStorage.getItem('heroScrollProgress');
+      return !!savedScrollProgress && parseFloat(savedScrollProgress) > 0;
+    }
+    return false;
+  });
 
   // Handle loading screen completion
   const handleLoadingComplete = () => {
     setIsLoading(false);
-    // Mark that loading screen has been shown
-    sessionStorage.setItem('hasLoadedHero', 'true');
     // Trigger binoculars slide-in animation after loading screen fades
     setTimeout(() => {
       setBinocularsVisible(true);
     }, 100);
   };
+
+  // Save scroll progress to sessionStorage
+  useEffect(() => {
+    const saveProgress = () => {
+      sessionStorage.setItem('heroScrollProgress', scrollProgress.toString());
+    };
+    
+    // Save on scroll
+    if (scrollProgress > 0) {
+      saveProgress();
+    }
+    
+    // Save on page unload (before refresh)
+    window.addEventListener('beforeunload', saveProgress);
+    return () => window.removeEventListener('beforeunload', saveProgress);
+  }, [scrollProgress]);
+
+  // Restore scroll position on mount
+  useEffect(() => {
+    const savedScrollProgress = sessionStorage.getItem('heroScrollProgress');
+    if (savedScrollProgress && parseFloat(savedScrollProgress) > 0) {
+      const progress = parseFloat(savedScrollProgress);
+      setScrollProgress(progress);
+      
+      // Update current section based on saved progress
+      const section = Math.floor(progress * 2);
+      setCurrentSection(Math.min(section, 1));
+      
+      // Trigger ScrollTrigger to scroll to the saved position
+      setTimeout(() => {
+        if (sectionRef.current) {
+          const scrollTriggerInstance = ScrollTrigger.getById('heroScrollTrigger');
+          if (scrollTriggerInstance) {
+            // Calculate the scroll position based on progress
+            const start = scrollTriggerInstance.start;
+            const end = scrollTriggerInstance.end;
+            const scrollY = start + (end - start) * progress;
+            window.scrollTo(0, scrollY);
+          }
+        }
+      }, 100);
+    }
+  }, []);
 
   // Lenis Smooth Scroll Setup
   useEffect(() => {
@@ -102,6 +150,7 @@ export default function HeroSection() {
       // Main timeline for scroll-jacking
       const tl = gsap.timeline({
         scrollTrigger: {
+          id: 'heroScrollTrigger',
           trigger: sectionRef.current,
           start: "top top",
           end: "+=100%", // 2 sections * 100% each minus one = 100%

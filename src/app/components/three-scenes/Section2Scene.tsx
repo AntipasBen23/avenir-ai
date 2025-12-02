@@ -29,6 +29,8 @@ export default function Section2Scene({ scrollProgress }: Section2SceneProps) {
       "/models/workstation.glb",
       (gltf) => {
         console.log("Workstation model loaded successfully");
+        // Rotate the model 180 degrees on load
+        gltf.scene.rotation.y = Math.PI;
         setModel(gltf.scene);
       },
       (progress) => {
@@ -54,12 +56,12 @@ export default function Section2Scene({ scrollProgress }: Section2SceneProps) {
       const endZ = 0; // Final position
       deskRef.current.position.z = startZ + (approachProgress * (endZ - startZ));
       
-      // Keep X position to the left
-      deskRef.current.position.x = -2;
+      // Keep X position centered
+      deskRef.current.position.x = 0;
 
-      // Also scale up slightly as it approaches
-      const startScale = 0.5;
-      const endScale = 1;
+      // Scale up as it approaches (from 1 to 1.5 for larger final size)
+      const startScale = 1;
+      const endScale = 1.5;
       const scale = startScale + (approachProgress * (endScale - startScale));
       deskRef.current.scale.set(scale, scale, scale);
 
@@ -78,9 +80,9 @@ export default function Section2Scene({ scrollProgress }: Section2SceneProps) {
       });
     } else {
       // During Section 2 proper - desk is fully visible and in position
-      deskRef.current.position.x = -2; // Left of center
+      deskRef.current.position.x = 0; // Centered
       deskRef.current.position.z = 0;
-      deskRef.current.scale.set(1, 1, 1);
+      deskRef.current.scale.set(1.5, 1.5, 1.5); // Larger final size
 
       // Ensure full opacity
       deskRef.current.traverse((child) => {
@@ -96,8 +98,8 @@ export default function Section2Scene({ scrollProgress }: Section2SceneProps) {
         }
       });
 
-      // Subtle idle animation
-      deskRef.current.rotation.y = Math.sin(time * 0.2) * 0.02;
+      // Subtle idle animation - add to base 180° rotation
+      deskRef.current.rotation.y = Math.PI + Math.sin(time * 0.2) * 0.02;
     }
   });
 
@@ -108,9 +110,8 @@ export default function Section2Scene({ scrollProgress }: Section2SceneProps) {
         <primitive
           ref={deskRef}
           object={model.clone()}
-          position={[-2, -1, -50]} // Start far away, positioned to the left
-          rotation={[0, Math.PI, 0]} // Rotate 180° - chair backs camera
-          scale={[0.5, 0.5, 0.5]} // Start smaller
+          position={[0, -1, -50]} // Centered horizontally (x=0), start far away
+          scale={[1, 1, 1]} // Start at full size (was 0.5)
         />
       )}
 
