@@ -149,103 +149,71 @@ export default function HeroSection() {
           id: 'heroScrollTrigger',
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=200%", // 3 sections * 100% each minus one = 200%
+          end: "+=200%",
           scrub: 1,
           pin: true,
           anticipatePin: 1,
           onUpdate: (self) => {
-            // Update scroll progress (0 to 1)
-            setScrollProgress(self.progress);
-
-            // Update current section (0 to 2) - 3 sections now
-            const section = Math.floor(self.progress * 3);
+            const progress = self.progress;
+            
+            // Update scroll progress and current section
+            setScrollProgress(progress);
+            const section = Math.floor(progress * 3);
             setCurrentSection(Math.min(section, 2));
             
             // Update progress lines
-            const progress = self.progress;
-            
-            // First line (01 to 02) - fills during 0-33%
             if (progressLine1Ref.current) {
               if (progress <= 0.33) {
-                const line1Progress = progress / 0.33; // 0 to 1
-                progressLine1Ref.current.style.height = `${line1Progress * 100}%`;
+                progressLine1Ref.current.style.height = `${(progress / 0.33) * 100}%`;
               } else {
                 progressLine1Ref.current.style.height = '100%';
               }
             }
             
-            // Second line (02 to 03) - fills during 33-67%
             if (progressLine2Ref.current) {
               if (progress <= 0.33) {
                 progressLine2Ref.current.style.height = '0%';
               } else if (progress <= 0.67) {
-                const line2Progress = (progress - 0.33) / 0.34; // 0 to 1
-                progressLine2Ref.current.style.height = `${line2Progress * 100}%`;
+                progressLine2Ref.current.style.height = `${((progress - 0.33) / 0.34) * 100}%`;
               } else {
                 progressLine2Ref.current.style.height = '100%';
               }
             }
+
+            // Control content visibility based on scroll position
+            contentRefs.current.forEach((content, index) => {
+              if (!content) return;
+              
+              if (index === 0) {
+                content.style.display = progress < 0.33 ? 'block' : 'none';
+              } else if (index === 1) {
+                content.style.display = (progress >= 0.32 && progress < 0.67) ? 'block' : 'none';
+              } else if (index === 2) {
+                content.style.display = progress >= 0.66 ? 'block' : 'none';
+              }
+            });
           },
         },
       });
 
-      // Animate content sections with proper visibility control
+      // Animate content sections
       contentRefs.current.forEach((content, index) => {
         if (!content || index > 2) return;
 
         if (index === 0) {
-          // Section 1: Visible at start, hidden at 31%
-          gsap.set(content, { opacity: 1, y: 0, display: 'block' });
-          
-          tl.to(content, {
-            opacity: 0,
-            y: -30,
-            duration: 0.2,
-            ease: "power2.in",
-            onComplete: () => { content.style.display = 'none'; }
-          }, 0.31);
+          gsap.set(content, { opacity: 1, y: 0 });
+          tl.to(content, { opacity: 0, y: -30, duration: 0.2, ease: "power2.in" }, 0.31);
         }
 
         if (index === 1) {
-          // Section 2: Hidden at start, visible 33-65%
-          gsap.set(content, { opacity: 0, y: 30, display: 'none' });
-          
-          tl.to(content, {
-            display: 'block',
-            duration: 0,
-          }, 0.33);
-          
-          tl.to(content, {
-            opacity: 1,
-            y: 0,
-            duration: 0.2,
-            ease: "power2.out",
-          }, 0.33);
-          
-          tl.to(content, {
-            opacity: 0,
-            y: -30,
-            duration: 0.2,
-            ease: "power2.in",
-            onComplete: () => { content.style.display = 'none'; }
-          }, 0.65);
+          gsap.set(content, { opacity: 0, y: 30 });
+          tl.to(content, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 0.33);
+          tl.to(content, { opacity: 0, y: -30, duration: 0.2, ease: "power2.in" }, 0.65);
         }
 
         if (index === 2) {
-          // Section 3: Hidden at start, visible at 67%
-          gsap.set(content, { opacity: 0, y: 30, display: 'none' });
-          
-          tl.to(content, {
-            display: 'block',
-            duration: 0,
-          }, 0.67);
-          
-          tl.to(content, {
-            opacity: 1,
-            y: 0,
-            duration: 0.2,
-            ease: "power2.out",
-          }, 0.67);
+          gsap.set(content, { opacity: 0, y: 30 });
+          tl.to(content, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, 0.67);
         }
       });
 
