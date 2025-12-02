@@ -6,10 +6,11 @@ import { Suspense, useRef, useEffect } from "react";
 import * as THREE from "three";
 import Section1Scene from "./Section1Scene";
 import Section2Scene from "./Section2Scene";
+import Section3Scene from "./Section3scene";
 
 interface ThreeSceneProps {
   scrollProgress: number; // 0 to 1
-  currentSection: number; // 0 to 1
+  currentSection: number; // 0 to 2 (3 sections now)
   binocularsVisible: boolean; // Controls slide-in animation
 }
 
@@ -18,21 +19,40 @@ function CameraController({ scrollProgress }: { scrollProgress: number }) {
   const { camera } = useThree();
   
   useFrame(() => {
-    // Section 1 progress (0-0.5 of total scroll = first section)
-    const section1Progress = Math.min(1, scrollProgress * 2);
-    
-    // Camera zoom animation for Section 1
-    // Phase 1 (0-75%): Camera stays at z=5
-    // Phase 2 (75-100%): Camera zooms into lens (z=5 to z=-1)
-    if (scrollProgress < 0.5) {
+    // Section 1: Binoculars zoom (0-33% of total scroll)
+    if (scrollProgress < 0.33) {
+      const section1Progress = scrollProgress / 0.33; // 0 to 1
+      
+      // Camera zoom into binoculars lens at 75-100%
       if (section1Progress > 0.75) {
         const zoomProgress = (section1Progress - 0.75) / 0.25;
         camera.position.z = 5 - (zoomProgress * 6); // 5 to -1
       } else {
         camera.position.z = 5;
       }
-    } else {
-      // After Section 1, camera stays at final position
+    }
+    // Section 2: Desk rotation and logo portal (33-67% of total scroll)
+    else if (scrollProgress < 0.67) {
+      const section2Progress = (scrollProgress - 0.33) / 0.34; // 0 to 1
+      
+      // Camera zooms into logo portal at 90-100% of Section 2
+      if (section2Progress > 0.9) {
+        const portalZoomProgress = (section2Progress - 0.9) / 0.1;
+        // Zoom toward logo position (x=2.5, y=0.5, z=0)
+        camera.position.x = portalZoomProgress * 2.5;
+        camera.position.y = portalZoomProgress * 0.5;
+        camera.position.z = 5 - (portalZoomProgress * 6); // Zoom forward
+      } else {
+        camera.position.x = 0;
+        camera.position.y = 0;
+        camera.position.z = 5;
+      }
+    }
+    // Section 3: Conference room (67-100% of total scroll)
+    else {
+      // Camera positioned for conference room view
+      camera.position.x = 0;
+      camera.position.y = 0;
       camera.position.z = 5;
     }
   });
@@ -61,17 +81,22 @@ export default function ThreeScene({ scrollProgress, currentSection, binocularsV
       
       {/* Suspense for lazy loading 3D objects */}
       <Suspense fallback={null}>
-        {/* Section 1: Binoculars - Vision */}
-        {(currentSection === 0 || (currentSection === 1 && scrollProgress < 0.55)) && (
+        {/* Section 1: Binoculars - Vision (0-33% of total scroll) */}
+        {scrollProgress < 0.4 && (
           <Section1Scene 
             scrollProgress={scrollProgress} 
             binocularsVisible={binocularsVisible}
           />
         )}
 
-        {/* Section 2: Workstation Desk - Planning */}
-        {(currentSection === 1 || scrollProgress > 0.425) && (
+        {/* Section 2: Workstation Desk - Planning (28-67% of total scroll) */}
+        {scrollProgress >= 0.28 && scrollProgress < 0.68 && (
           <Section2Scene scrollProgress={scrollProgress} />
+        )}
+
+        {/* Section 3: Conference Room (65%+ of total scroll) */}
+        {scrollProgress >= 0.65 && (
+          <Section3Scene scrollProgress={scrollProgress} />
         )}
       </Suspense>
     </Canvas>

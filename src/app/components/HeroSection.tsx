@@ -5,18 +5,13 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import dynamic from "next/dynamic";
 import LoadingScreen from "./LoadingScreen";
+import ContentSection from "./ContentSection";
+import ProgressIndicator from "./ProgressIndicator";
 
 // Dynamically import ThreeScene to avoid SSR issues
 const ThreeScene = dynamic(() => import("./three-scenes/ThreeScene"), {
   ssr: false,
 });
-
-// Import your content sections (currently commented out)
-// import Section1 from "./hero-sections/Section1";
-// import Section2 from "./hero-sections/Section2";
-// import Section3 from "./hero-sections/Section3";
-// import Section4 from "./hero-sections/Section4";
-// import Section5 from "./hero-sections/Section5";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -26,7 +21,8 @@ if (typeof window !== "undefined") {
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const progressLineRef = useRef<HTMLDivElement>(null);
+  const progressLine1Ref = useRef<HTMLDivElement>(null); // Line between 01-02
+  const progressLine2Ref = useRef<HTMLDivElement>(null); // Line between 02-03
   const [currentSection, setCurrentSection] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -153,7 +149,7 @@ export default function HeroSection() {
           id: 'heroScrollTrigger',
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=100%", // 2 sections * 100% each minus one = 100%
+          end: "+=200%", // 3 sections * 100% each minus one = 200%
           scrub: 1,
           pin: true,
           anticipatePin: 1,
@@ -161,62 +157,127 @@ export default function HeroSection() {
             // Update scroll progress (0 to 1)
             setScrollProgress(self.progress);
 
-            // Update current section (0 to 1) - only 2 sections now
-            const section = Math.floor(self.progress * 2);
-            setCurrentSection(Math.min(section, 1));
+            // Update current section (0 to 2) - 3 sections now
+            const section = Math.floor(self.progress * 3);
+            setCurrentSection(Math.min(section, 2));
+            
+            // Update progress lines
+            const progress = self.progress;
+            
+            // First line (01 to 02) - fills during 0-33%
+            if (progressLine1Ref.current) {
+              if (progress <= 0.33) {
+                const line1Progress = progress / 0.33; // 0 to 1
+                progressLine1Ref.current.style.height = `${line1Progress * 100}%`;
+              } else {
+                progressLine1Ref.current.style.height = '100%';
+              }
+            }
+            
+            // Second line (02 to 03) - fills during 33-67%
+            if (progressLine2Ref.current) {
+              if (progress <= 0.33) {
+                progressLine2Ref.current.style.height = '0%';
+              } else if (progress <= 0.67) {
+                const line2Progress = (progress - 0.33) / 0.34; // 0 to 1
+                progressLine2Ref.current.style.height = `${line2Progress * 100}%`;
+              } else {
+                progressLine2Ref.current.style.height = '100%';
+              }
+            }
           },
         },
       });
 
-      // Animate content sections (only 2 sections now)
+      // Animate content sections with proper visibility control
       contentRefs.current.forEach((content, index) => {
-        if (!content || index > 1) return; // Only handle first 2 sections
+        if (!content || index > 2) return;
 
         if (index === 0) {
-          // Section 1: Starts VISIBLE, fades out when entering Section 2 (at 50% scroll)
-          gsap.set(content, { opacity: 1, y: 0 }); // Set initial state as visible
+          // Section 1: Visible at start, hidden at 31%
+          gsap.set(content, { opacity: 1, y: 0, display: 'block' });
           
-          tl.to(
-            content,
-            {
-              opacity: 0,
-              y: -30,
-              duration: 0.3,
-              ease: "power2.in",
-            },
-            0.48 // Fade out at 48% (just before Section 2 starts at 50%)
-          );
+          tl.to(content, {
+            opacity: 0,
+            y: -30,
+            duration: 0.2,
+            ease: "power2.in",
+            onComplete: () => { content.style.display = 'none'; }
+          }, 0.31);
         }
 
         if (index === 1) {
-          // Section 2: Fades in when it starts (at 50% scroll)
-          tl.fromTo(
-            content,
-            { opacity: 0, y: 30 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.3,
-              ease: "power2.out",
-            },
-            0.5 // Fade in at 50% (when Section 2 starts)
-          );
+          // Section 2: Hidden at start, visible 33-65%
+          gsap.set(content, { opacity: 0, y: 30, display: 'none' });
+          
+          tl.to(content, {
+            display: 'block',
+            duration: 0,
+          }, 0.33);
+          
+          tl.to(content, {
+            opacity: 1,
+            y: 0,
+            duration: 0.2,
+            ease: "power2.out",
+          }, 0.33);
+          
+          tl.to(content, {
+            opacity: 0,
+            y: -30,
+            duration: 0.2,
+            ease: "power2.in",
+            onComplete: () => { content.style.display = 'none'; }
+          }, 0.65);
+        }
+
+        if (index === 2) {
+          // Section 3: Hidden at start, visible at 67%
+          gsap.set(content, { opacity: 0, y: 30, display: 'none' });
+          
+          tl.to(content, {
+            display: 'block',
+            duration: 0,
+          }, 0.67);
+          
+          tl.to(content, {
+            opacity: 1,
+            y: 0,
+            duration: 0.2,
+            ease: "power2.out",
+          }, 0.67);
         }
       });
 
-      // Animate progress line filling
-      if (progressLineRef.current) {
-        tl.fromTo(
-          progressLineRef.current,
-          { height: "0%" },
-          {
-            height: "100%",
-            duration: 2, // 2 sections
-            ease: "none",
-          },
-          0
-        );
-      }
+      // Animate progress lines filling - need to handle 2 separate lines
+      // Line 1: Between dots 01-02 (fills from 0-33% scroll)
+      // Line 2: Between dots 02-03 (fills from 33-67% scroll)
+      
+      tl.call(() => {
+        const progress = ScrollTrigger.getById('heroScrollTrigger')?.progress || 0;
+        
+        // First line (01 to 02) - fills during 0-33%
+        if (progressLine1Ref.current) {
+          if (progress <= 0.33) {
+            const line1Progress = progress / 0.33; // 0 to 1
+            progressLine1Ref.current.style.height = `${line1Progress * 100}%`;
+          } else {
+            progressLine1Ref.current.style.height = '100%';
+          }
+        }
+        
+        // Second line (02 to 03) - fills during 33-67%
+        if (progressLine2Ref.current) {
+          if (progress <= 0.33) {
+            progressLine2Ref.current.style.height = '0%';
+          } else if (progress <= 0.67) {
+            const line2Progress = (progress - 0.33) / 0.34; // 0 to 1
+            progressLine2Ref.current.style.height = `${line2Progress * 100}%`;
+          } else {
+            progressLine2Ref.current.style.height = '100%';
+          }
+        }
+      }, [], "+=0"); // Run continuously
     }, sectionRef);
 
     return () => ctx.revert();
@@ -410,103 +471,21 @@ export default function HeroSection() {
         </button>
       </div>
 
-      {/* Content Container - Bottom Left (like Beyond Aero) */}
+      {/* Content Container - Bottom Left */}
       <div className="absolute inset-0 z-10 flex items-end pb-12 lg:pb-20">
-        <div className="relative w-full max-w-3xl px-8 lg:px-16">
-          {/* Section 1: Hero - AI Vision (VISIBLE BY DEFAULT) */}
-          <div
-            ref={(el) => {
-              contentRefs.current[0] = el;
-            }}
-            className="absolute bottom-0"
-          >
-            <div className="space-y-4">
-              {/* Main heading */}
-              <h1 className="text-3xl lg:text-4xl font-bold text-white leading-tight max-w-xl">
-                Optimize Employee Benefits<br />with AI-Powered Precision
-              </h1>
-              
-              {/* Description */}
-              <p className="text-sm lg:text-base text-gray-300 max-w-lg leading-relaxed">
-                Interactive AI workers analyze claims, HRIS, and benchmarks to uncover<br className="hidden lg:block" /> 
-                cost drivers, forecast trends, and streamline decisions — in real time.
-              </p>
-              
-              {/* Buttons */}
-              <div className="flex gap-4 pt-2">
-                <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-medium transition-all flex items-center gap-2 group text-sm">
-                  Book a demo
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </button>
-                <button className="px-6 py-3 border border-white/40 hover:border-white/60 text-white rounded-full font-medium transition-all text-sm">
-                  Contact us
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Section 2: Workstation - Planning (HIDDEN BY DEFAULT) */}
-          <div
-            ref={(el) => {
-              contentRefs.current[1] = el;
-            }}
-            className="absolute bottom-0"
-          >
-            <div className="space-y-4">
-              <h2 className="text-3xl lg:text-4xl font-bold text-white leading-tight max-w-xl">
-                From Vision to Execution
-              </h2>
-              <p className="text-sm lg:text-base text-gray-300 max-w-lg leading-relaxed">
-                Our AI platform transforms insights into action, connecting the dots between data and decisions.
-              </p>
-            </div>
-          </div>
+        <div className="relative w-full max-w-3xl">
+          <ContentSection section={0} setRef={(el) => { contentRefs.current[0] = el; }} />
+          <ContentSection section={1} setRef={(el) => { contentRefs.current[1] = el; }} />
+          <ContentSection section={2} setRef={(el) => { contentRefs.current[2] = el; }} />
         </div>
       </div>
 
-      {/* Progress Indicator - Right Side */}
-      <div className="absolute right-8 top-1/2 -translate-y-1/2 z-20">
-        <div className="relative flex flex-col items-center">
-          {/* Progress Dots */}
-          {[1, 2].map((num, index) => (
-            <div key={num} className="relative flex flex-col items-center">
-              {/* Dot */}
-              <div
-                className={`w-3 h-3 rounded-full border-2 transition-all duration-300 ${
-                  index === currentSection
-                    ? "border-white bg-white scale-125"
-                    : "border-gray-500 bg-transparent"
-                }`}
-              />
-
-              {/* Number */}
-              <span
-                className={`mt-2 text-xs font-medium transition-colors duration-300 ${
-                  index === currentSection ? "text-white" : "text-gray-500"
-                }`}
-              >
-                0{num}
-              </span>
-
-              {/* Line connector (only between dots) */}
-              {index < 1 && (
-                <div className="relative w-0.5 h-16 my-2 bg-gray-700">
-                  {/* Filling white line */}
-                  {index === 0 && (
-                    <div
-                      ref={progressLineRef}
-                      className="absolute top-0 left-0 w-full bg-white origin-top"
-                      style={{ height: "0%" }}
-                    />
-                  )}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Progress Indicator */}
+      <ProgressIndicator 
+        currentSection={currentSection}
+        progressLine1Ref={progressLine1Ref}
+        progressLine2Ref={progressLine2Ref}
+      />
 
       {/* Scroll Indicator - Bottom Center (only show on first section) */}
       {currentSection === 0 && (
