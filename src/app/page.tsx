@@ -1,13 +1,13 @@
 // src/app/page.tsx
-import Navbar from "./components/Navbar";
+// import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
-import InteractiveSection from "./components/InteractiveSection";
-import PartnersSection from "./components/PartnersSection";
-import WhyAvenirSection from "./components/WhyAvenirSection";
-import HowAvenirHelpsSection from "./components/HowAvenirHelpsSection";
-import WhoIsAvenirForSection from "./components/WhoIsAvenirForSection";
-import EmployAvenirSection from "./components/EmployAvenirSection";
-import Footer from "./components/Footer";
+// import InteractiveSection from "./components/InteractiveSection";
+// import PartnersSection from "./components/PartnersSection";
+// import WhyAvenirSection from "./components/WhyAvenirSection";
+// import HowAvenirHelpsSection from "./components/HowAvenirHelpsSection";
+// import WhoIsAvenirForSection from "./components/WhoIsAvenirForSection";
+// import EmployAvenirSection from "./components/EmployAvenirSection";
+// import Footer from "./components/Footer";
 
 export default function Home() {
   return (
@@ -28,15 +28,15 @@ export default function Home() {
         }}
       /> */}
       
-      <Navbar />
+      {/* <Navbar /> */}
       <HeroSection />
-      <InteractiveSection />
+      {/* <InteractiveSection />
       <PartnersSection />
       <WhyAvenirSection />
       <HowAvenirHelpsSection />
       <WhoIsAvenirForSection />
       <EmployAvenirSection />
-      <Footer />
+      <Footer /> */}
     </div>
   );
 }
